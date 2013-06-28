@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ 
+<script type="text/javascript" src="cordova-2.7.0.js"></script>
+<link rel="stylesheet" href="js/jquery.mobile-1.3.1.min.css" />
+<link rel="stylesheet" href="css/gasolinazos.css" />
+<script src="js/jquery.js"></script>
+<script src="js/jquery.mobile-1.3.1.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbR4DqYTbeqZUACVrVaAwnjFcgY6vR4BA&sensor=true"></script>	
+<script src="js/gmaps.js"></script>	
+<script src="js/gasolinazos.js"></script>
+	
+</head>
+<body>
+	<input type="hidden" id="latitud" value="0" />
+	<input type="hidden" id="base_url" value="http://skrik1893.startlogic.com/gasolinazos/" />
+	<input type="hidden" id="longitud" value="0" />
+	<input type="hidden" id="markers" value="0" />
+	<input type="hidden" id="position" value="false" />
+	<input type="hidden" id="geo-lat" value="0" />
+	<input type="hidden" id="geo-lng" value="0" />
+	<input type="hidden" id="current-marker" value="0" />
+	<input type="hidden" id="current-marker-color" value="0" />
+
+
+<div data-role="page">
+ 
+	<div data-role="header">
+		<h1>Gasolinazos.com</h1>
+	</div><!-- /header -->
+ 
+	<div data-role="content">
+		<section id="mapa">
+             <div id="map-canvas" class="rounded"></div>
+		</section>
+		<div data-role="collapsible" data-theme="a" data-content-theme="a">
+			<h3>Buscador</h3>
+			<div id="div-estado">
+                    <label for="estado">Estado:</label> 
+                    <select id="estado">
+                        <option> - Seleccionar - </option>
+                        <? foreach($estados as $estado){ ?>
+                            <option value="<?=$estado->idestado?>"><?=$estado->nombre?></option>
+                        <? } ?>
+                    </select>
+                </div>
+                <div id="div-ciudad">
+                    <label for="ciudad">Ciudad:</label> 
+                    <select id="ciudad">
+                        <option> - Seleccionar - </option>
+                    </select>
+                </div>
+                <div id="div-colonia">
+                    <label for="colonia">Colonia:</label> 
+                    <select id="colonia">
+                        <option value="0"> - Seleccionar - </option>
+                    </select>
+                </div>
+                <div id="div-texto">
+                    <label for="buscador-texto">Texto libre: </label> <input type="text" id="buscador-texto" />
+                </div>
+                <br><br>
+                <div id="buscadorAvanzado" style="display:none">
+                    <div id="filtros" style="vertical-align:top">
+                        <b title="Prioridad en los colores, elija a que filtro dar prioridad">Colores:</b><br>
+                        <label for="profeco" title="Si elige PROFECO se dará prioridad a las verificaciones de Litros de a litro">PROFECO</label> <input type="radio" value="profeco" id="profeco" name="filtros" />
+                        <label for="gasolinazos" title="Si elige Gasolinazos.com se dará prioridad a las calificaciones de los usuarios">Gasolinazos.com</label> <input type="radio" value="gasolinazos" id="gasolinazos" name="filtros" checked="checked" />
+                    </div>
+                    <div id="Servicios">
+                        <b title="Elija los servicios que deben tener las gasolineras que busca">Servicios:</b><br>
+                        <label for="premium" title="Gasolina Premium">Premium</label> <input type="checkbox" value="" class="checkServicios" id="premium" name="premium" checked="checked" />
+                        <label for="magna" title="Gasolina Magna">Magna</label> <input type="checkbox" value="" class="checkServicios" id="magna" name="magna" checked="checked" /><br>
+                        <label for="diesel" title="Diesel">Diesel</label> <input type="checkbox" value="" class="checkServicios" id="diesel" name="diesel" checked="checked" />
+                        <label for="dme" title="Diesel Marítimo">Diesel Marítimo</label> <input type="checkbox" value="" class="checkServicios" id="dme" name="dme" checked="checked" /><br>
+                        <label for="cualli" title="Servicio Cualli">Cualli</label> <input type="checkbox" value="" class="checkServicios" id="cualli" name="cualli" checked="checked" />
+                        <label for="vpm" title="Ventas de primera mano">VPM</label> <input type="checkbox" value="" class="checkServicios" id="vpm" name="vpm" checked="checked" /><br>
+
+                    </div>
+                </div>
+                <br>
+                <div id="div-boton" style="margin-bottom:10px;">
+                    <button class="botonAvanzado" id="btn-buscadorAvanzado">Búsqueda avanzada</button>
+                    <button id="buscar" class="botonMas">Buscar</button>
+                </div>
+		</div>
+		<section id="resultados">
+		<ul data-role="listview" id="ul-resultados" >
+		</ul>
+		</section>
+	</div><!-- /content -->
+ 
+</div><!-- /page -->
+ 
+ 
+</body>
+</html>

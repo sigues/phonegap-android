@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<!--        	<link rel="stylesheet" type="text/css" href="css/index.css" /> -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+		<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
+		
+		<!-- Extra Codiqa features -->
+		<link rel="stylesheet" href="css/codiqa.ext.css">
+
+
+        <title>Gasolinazos.com</title>
+    </head>
+    <body>
+    <input type="hidden" name="base_url" id="base_url" value="http://skrik1893.startlogic.com/gasolinazos/" />
+        <div class="app">
+            
+
+			<div data-role="page" id="page1">
+			    <div data-theme="a" data-role="header">
+			        <h3>
+			            Header
+			        </h3>
+			    </div>
+			    <div data-role="content">
+			        <div data-role="collapsible-set">
+			            <div data-role="collapsible" data-collapsed="true">
+			                <h3>
+			                    Buscador
+			                </h3>
+								<div id="div-estado">
+	                            <label for="estado">Estado:</label> 
+	                                <select id="estado">
+	                                    <option> - Seleccionar - </option>
+	                                    
+	                                </select>
+	                            </div>
+	                            <div id="div-ciudad">
+	                                <label for="ciudad">Ciudad:</label> 
+	                                <select id="ciudad">
+	                                    <option> - Seleccionar - </option>
+	                                </select>
+	                            </div>
+	                            <div id="div-colonia">
+	                                <label for="colonia">Colonia:</label> 
+	                                <select id="colonia">
+	                                    <option value="0"> - Seleccionar - </option>
+	                                </select>
+	                            </div>
+	                            <div id="div-boton">
+	                                <button id="buscar">Buscar</button>
+	                            </div><br>
+	                            <div id="div-texto">
+	                                <label for="buscador-texto">Texto libre: </label> <input type="text" id="buscador-texto" />
+	                            </div>			            </div>
+			        </div>
+			        
+			        <section id="mapa">
+						<div id="map-canvas"></div>
+					</section>
+					<section id="resultados" class="list4">
+		                <input type="hidden" id="latitud" value="0" />
+		                <input type="hidden" id="longitud" value="0" />
+		                <input type="hidden" id="markers" value="0" />
+		                <input type="hidden" id="position" value="false" />
+		                <input type="hidden" id="geo-lat" value="0" />
+		                <input type="hidden" id="geo-lng" value="0" />
+		            
+           			<ul data-role="listview" data-divider-theme="b" data-inset="true" id="ul-resultados">
+			            
+			        </ul>
+			        </section>
+			    </div>
+			    <div data-theme="a" data-role="footer" data-position="fixed">
+			        <h3>
+			            Footer
+			        </h3>
+			    </div>
+</div>
+
+
+
+
+        </div>
+        <script type="text/javascript" src="cordova-2.7.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+		<!-- jQuery and jQuery Mobile -->
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
+		
+		<!-- Extra Codiqa features -->
+		<script type="text/javascript" src="js/codiqa.ext.js"></script>
+        
+		<script src="js/gmaps.js"></script>
+        
+        
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </body>
+</html>

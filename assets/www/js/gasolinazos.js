@@ -91,7 +91,7 @@ function initialize2(data){
               lat: position.coords.latitude,
               lng: position.coords.longitude,
               title: "Usted está aquí",
-              icon: "https://maps.google.com/mapfiles/kml/shapes/"+'poi.png',
+              icon: "img/marker_default.gif",
               draggable: true,
               infoWindow: {
                 content: '<p>'+"usted está aquí"+'</p>'
@@ -103,9 +103,9 @@ function initialize2(data){
               var lng = position.lng();
               $("#geo-lat").val(lat);
               $("#geo-lng").val(lng);
-              buscarGasolinerasCoord(lat, lng);
+             // buscarGasolinerasCoord(lat, lng);
           });
-          buscarGasolinerasCoord(position.coords.latitude, position.coords.longitude);
+          //buscarGasolinerasCoord(position.coords.latitude, position.coords.longitude);
         },
         error: function(error) {
           console.log('Geolocation failed: '+error.message);
@@ -264,7 +264,7 @@ function parseDatos(data,buscador){
             lat: latitud,
             lng: longitud,
             title: "Usted está aquí",
-            icon: "https://maps.google.com/mapfiles/kml/shapes/"+'poi.png',
+            icon: "img/marker_default.gif",
             draggable: true,
               infoWindow: {
                 maxWidth: 500,
@@ -550,7 +550,7 @@ function calculaRuta(idgasolinera){
               lat: $("#geo-lat").val(),
               lng: $("#geo-lng").val(),
               title: "Usted está aquí",
-              icon: "https://maps.google.com/mapfiles/kml/shapes/"+'poi.png',
+              icon: "img/marker_default.gif",
               draggable:true,
               infoWindow: {
                 content: '<p>'+"usted está aquí"+'</p>'

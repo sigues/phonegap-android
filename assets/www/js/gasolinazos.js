@@ -141,7 +141,7 @@ function cargaDatosMapa(data){
               lat: data[i].latitud,
               lng: data[i].longitud,
               title: data[i].estacion,
-              icon: $("#base_url").val()+'images/marker-'+color+'.png',
+              icon: 'img/marker-'+color+'.gif',
               infoWindow: {
                 content: '<!--<div id="infowindow_'+data[i].idgasolinera+'"></div><p>'+data[i].nombre+'<br>'+
                     '<small>'+data[i].direccion+'</small>'+'</p>-->'+'<div class="div_calificar">'+'<a href="#mapa" onclick=calculaRuta('+data[i].idgasolinera+');>Calcular Ruta</a>'+
@@ -239,6 +239,8 @@ function parseDatos(data,buscador){
         map.setCenter(center_lat.toString(),center_lng.toString());
     }
     $("#ul-resultados").html("");
+    $("#ul-resultados").append('<li data-role="list-divider">Resultadoss</li>');
+   
     var lenAnt = $("#markers").val();
     if(lenAnt>0){
         map.removeMarkers();
@@ -331,10 +333,25 @@ function parseDatos(data,buscador){
       color = calculaColor(data[i].promedio,data[i].votos,data[i].reportes);
       var nombreGasolinera = data[i].nombre.substr(0,25);
       var distanciaGasolinera = (data[i].distancia<1000)?data[i].distancia.toFixed(2)+" m." : (data[i].distancia/1000).toFixed(2)+" km."
-       $("#ul-resultados").append("<li class='"+color+" pan-to-marker' id='li-resultado-"+data[i].idgasolinera+"' title='"+data[i].direccion+"' data-marker-index='"+(i+j)+"' color='"+color+"' onclick='calculaRuta("+data[i].idgasolinera+");'><a href='#mapa'  style='color:#000000;text-decoration: none;'><span class='nombreEstacion'>"+nombreGasolinera+"<small> <b id='promedio_"+data[i].idgasolinera+"'>"+promedio+"</b>% </small></span></a> "
-          +"<small>Profeco: <img src='"+base_url+"images/light-"+color_profeco+".png' style='float:none' />  distancia:"+distanciaGasolinera+"<small></li>");
+       $("#ul-resultados").append("<li class=' pan-to-marker' id='li-resultado-"+data[i].idgasolinera+"' title='"+data[i].direccion+"' data-marker-index='"+(i+j)+"' color='"+color+"'>"+
+                                    '<fieldset class="ui-grid-a">'+
+                                        '<div class="ui-block-a"  style="width:80%" onclick="calculaRuta('+data[i].idgasolinera+');">'+
+                                            '<div data-role="fieldcontain">'+
+                                                "<a href='#mapa'  style='color:#000000;text-decoration: none;'>"+
+                                                "<span class='nombreEstacion'>"+nombreGasolinera+
+                                                "<small> <b id='promedio_"+data[i].idgasolinera+"'>"+promedio+"</b>% </small></span>"+
+                                                "<br><small>Profeco: <img src='"+base_url+"images/light-"+color_profeco+".png' style='float:none' />  distancia:"+distanciaGasolinera+"<small></a>"+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="ui-block-b" style="width:20%">'+
+                                            '<div data-role="controlgroup" data-type="horizontal" >'+
+                                               '<a href="estacion.html" data-rel="dialog" data-role="button" data-icon="arrow-r" id="boton-ver-'+data[i].idgasolinera+'" data-mini="true" data-iconpos="notext">Ver perfil</a> '+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</fieldset>'+
+                                '</li>');
 		$('#ul-resultados').listview('refresh');
-
+                $('#boton-ver-'+data[i].idgasolinera).button();
     }
     $(document).on('mouseover', '.pan-to-marker', function(e) {
         e.preventDefault();
@@ -353,11 +370,11 @@ function parseDatos(data,buscador){
           var lastMarker = $("#current-marker").val();
           var lastMarkerColor = $("#current-marker-color").val();
           if(lastMarkerColor != 0){
-            map.markers[lastMarker].setIcon( $("#base_url").val()+'images/marker-'+lastMarkerColor+'.png');
+            map.markers[lastMarker].setIcon( 'img/marker-'+lastMarkerColor+'.gif');
           }
           $("#current-marker").val($index);
           $("#current-marker-color").val(color);
-          map.markers[$index].setIcon( $("#base_url").val()+'images/marker-'+color+'-100.png');
+          map.markers[$index].setIcon( 'img/marker-'+color+'-80.gif');
         }
         else {
           // using coordinates
@@ -524,7 +541,7 @@ function calculaRuta(idgasolinera){
           var marker = map.addMarker({
             lat: data.latitud,
             lng: data.longitud,
-            icon: $("#base_url").val()+'images/marker-star.png',
+            icon: 'img/marker-star.png',
             title: "PEMEX estación "+data.estacion
           });   
             

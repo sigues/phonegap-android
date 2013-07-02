@@ -12,9 +12,12 @@
 			overflow-x: hidden;
 			padding-left: 3%;
         }
-		#resultados li{
-			width:98%;
-		}
+        #resultados li{
+                width:98%;
+        }
+        #resultados li small{
+                margin-left:10px;
+        }
         #map-canvas{
             height: 100%
         }

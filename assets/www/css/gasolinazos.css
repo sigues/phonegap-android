@@ -10,10 +10,9 @@
             height: 400px;
             overflow:auto;
 			overflow-x: hidden;
-			padding-left: 3%;
         }
         #resultados li{
-                width:98%;
+                /*width:98%;*/
         }
         #resultados li small{
                 margin-left:10px;
@@ -173,3 +172,6 @@
                 position:relative;
                 top:1px;
         }
+		.ui-controlgroup-controls{
+			border-radius: 5px 5px 5px 5px;
+		}

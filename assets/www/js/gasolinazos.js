@@ -723,7 +723,7 @@ if($("#position").val()=="true"){
 				console.log(lat+","+lng);
 				var cnt = new google.maps.LatLng(lat, lng);
 				marker.setPosition(cnt);
-				map.setCenter(lat,lng);
+				//map.setCenter(lat,lng);
 			}else{
 				console.log($("#geo-lat").val() - lat);
 			}

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:fb="http://ogp.me/ns/fb#">
 <head>
  
 <script type="text/javascript" src="cordova-2.7.0.js"></script>
@@ -112,10 +112,31 @@
 	</div>
 
 	<div data-role="content">
-		<section id="contenido-gasolinera"></section>
-		<div class="fb-comments" data-href="http://skrik1893.startlogic.com/gasolinazos/index.php/gasolinera/estacion" data-num-posts="10" id="fb-comments">
-		</div>
-		<div id="fb-root"></div>
+		<section id="contenido-gasolinera">
+			<span id="nombre-gas"></span><br>
+			<span id="direccion-gas"></span><br>
+		<table>
+			<tr>
+				<td>PROFECO: <span id="profeco-gas"></span></td>
+				<td>Gasolinazos: <span id="gasolinazos-gas"></span></td>
+			</tr>
+			<tr>
+				<td>Distancia: </td><td><span id="distancia-gas"></span></td>
+			</tr>
+			<tr>
+				<td>Telefono: </td><td><span id="telefono-gas"></span></td>
+			</tr>
+			<tr>
+				<td>Correo: </td><td><span id="correo-gas"></span></td>
+			</tr>
+			<tr>
+				<td>Servicios: </td><td><span id="servicios-gas"></span></td>
+			</tr>
+		</table>
+		</section>
+		<section id="comentarios-estacion">
+		
+		</section>
 	</div>
 
 	<div data-theme="a" data-role="footer" data-position="fixed">

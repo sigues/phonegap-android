@@ -36,33 +36,41 @@ $(document).ready(function() {
         $("#buscadorAvanzado").slideToggle(500);
     });
 	
-	$(document).on('pageshow', '#second', function(e){    
+	$(document).on('pageshow', '#second', function(e){   
+		$("#comentarios-estacion").html("");
+		$.mobile.loading('show');
 		$.ajax({
 				url: $("#base_url").val()+"index.php/gasolinera/getPerfilEstacion",
 				type: "post",
 				dataType: "json",
 				data:{
-					idgasolinera:$("#gasolinera-mostrada").val()
+					idgasolinera:$("#gasolinera-mostrada").val(),
+					latitud:$("#geo-lat").val(),
+					longitud:$("#geo-lng").val()
 				},
 				success: function( strData ){
-					$("#contenido-gasolinera").html(strData);
+					//$("#contenido-gasolinera").html(strData);
+					cargaDatosEstacion(strData);
+					$.mobile.loading('hide');
 					
-					$("#fb-comments").attr("data-href","http://skrik1893.startlogic.com/gasolinazos/index.php/gasolinera/estacion/"+strData.estacion)
+					var ref = "http://skrik1893.startlogic.com/gasolinazos/index.php/gasolinera/estacion/"+strData.estacion;
+					/*$("#comentarios-estacion").html('<div id="fb-root" class="fb-root"></div><fb:comments href="'+ref+'" num_posts="10" id="fb-comments"></fb:comments>');
 						(function(d, s, id) {
 						  var js, fjs = d.getElementsByTagName(s)[0];
 						  if (d.getElementById(id)) return;
 						  js = d.createElement(s); js.id = id;
-						  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
+						  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1&appId=465561006870893";
 						  fjs.parentNode.insertBefore(js, fjs);
 						}(document, 'script', 'facebook-jssdk'));
 						
-						$("#fb-comments").width(width);
-						$("#fb-comments").attr("width",width);
-    
+					$("#fb-comments").attr('href', ref);
+					FB.XFBML.parse();	
+					$("#comentarios-estacion").width(width);
+					$("#comentarios-estacion").attr("width",width);*/
+					
 				}
 			});
 	});
-
 	
 	$.mobile.loading('hide');
 });
@@ -381,7 +389,7 @@ function parseDatos(data,buscador){
       var color = "";
       color = calculaColor(data[i].promedio,data[i].votos,data[i].reportes);
       var nombreGasolinera = data[i].nombre.substr(0,25);
-      var distanciaGasolinera = (data[i].distancia<1000)?data[i].distancia.toFixed(2)+" m." : (data[i].distancia/1000).toFixed(2)+" km."
+      var distanciaGasolinera = (data[i].distancia<1000)?data[i].distancia.toFixed(2)+" m." : (data[i].distancia/1000).toFixed(2)+" km.";
        $("#ul-resultados").append("<li id='li-resultado-"+data[i].idgasolinera+"' title='"+data[i].direccion+"' color='"+color+"'>"+
                                     '<fieldset class="ui-grid-a">'+
                                         '<div class="ui-block-a"  style="width:100%">'+
@@ -389,7 +397,7 @@ function parseDatos(data,buscador){
                                                 "<a href='#' id='open-dialog-"+data[i].idgasolinera+"' idgasolinera='"+data[i].idgasolinera+"' style='color:#000000;text-decoration: none;'>"+
                                                 "<span class='nombreEstacion'>"+nombreGasolinera+
                                                 "<small> <b id='promedio_"+data[i].idgasolinera+"'>"+promedio+"</b>% </small></span>"+
-                                                "<br><small>Profeco: <img src='"+base_url+"images/light-"+color_profeco+".png' style='float:none' />  distancia:"+distanciaGasolinera+"<small></a>"+
+                                                "<br><small>Profeco: <img src='img/light-"+color_profeco+".png' style='float:none' />  distancia:"+distanciaGasolinera+"<small></a>"+
                                             '</div>'+
 											botones(data[i],color,i,j,"")+
                                         '</div>'+
@@ -731,10 +739,57 @@ if($("#position").val()=="true"){
          // alert("Done!");
         }
       });
-		
-		
 }
+}
+
+function cargaDatosEstacion(data){
+	console.log(data);
+	$("#nombre-gas").html(data.estacion+" - "+data.nombre);
+	$("#direccion-gas").html(data.direccion+" "+data.colonia+", "+data.nombre_ciudad+", "+data.nombre_estado);
+	var distanciaGasolinera = (data.distancia<1000)?data.distancia.toFixed(2)+" m." : (data.distancia/1000).toFixed(2)+" km.";
+	$("#distancia-gas").html(distanciaGasolinera);
+	$("#telefono-gas").html(data.telefono);
+	$("#correo-gas").html("<a href='mailto:"+data.email+"'>"+data.email+"</a>");
+	var reportes_len = data.reportes.length;
+	if(reportes_len>0){
+          var color_profeco = data.reportes[0].semaforo;
+          switch(color_profeco){
+              case "1":
+                  color_profeco = "green";
+              break;
+              case "2":
+                  color_profeco = "yellow";
+              break;
+              case "3":
+                  color_profeco = "red";
+              break;
+              default:
+                  color_profeco = "gray";
+              break;
+          }
+	}else{
+		var color_profeco = "gray";
+	}
+	var promedio = data.promedio/100;
+	var color = "";
+	if(promedio<=1.00 && promedio>=0.85){
+		color = "green";
+	} else if (promedio<0.85 && promedio>=0.65){
+		color = "yellow";
+	} else if (promedio<0.65 && promedio>=0.00 && data.votos>0){
+		color = "red";
+	} else {
+		color = "gray";
+	}
+	promedio = promedio * 100;
 	
+	$("#profeco-gas").html("<img src='img/light-"+color_profeco+".png' style='float:none' /> ");
+	$("#gasolinazos-gas").html("<img src='img/light-"+color+".png' style='float:none' /> "+promedio.toFixed(2)+"% ("+data.votos+" votos)");
+	$("#servicios-gas").html("");
+	for( var i in data.productos){
+		$("#servicios-gas").append("<img src=\"img/"+data.productos[i].nombre.toLowerCase()+".png\" /><br>");
+		console.log(data.productos[i].nombre);
+	}
 }
 
 function regresarAListado(){

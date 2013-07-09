@@ -35,6 +35,10 @@ $(document).ready(function() {
     $("#btn-buscadorAvanzado").click(function(){
         $("#buscadorAvanzado").slideToggle(500);
     });
+
+
+	//$("#uuid").val(device.uuid);
+	$("#uuid").val("1234");
 	
 	$(document).on('pageshow', '#second', function(e){   
 		$("#comentarios-estacion").html("");
@@ -46,7 +50,9 @@ $(document).ready(function() {
 				data:{
 					idgasolinera:$("#gasolinera-mostrada").val(),
 					latitud:$("#geo-lat").val(),
-					longitud:$("#geo-lng").val()
+					longitud:$("#geo-lng").val(),
+					usuario:$("#uuid").val(),
+					tipo:$("#device").val()
 				},
 				success: function( strData ){
 					//$("#contenido-gasolinera").html(strData);
@@ -187,18 +193,20 @@ function cargaDatosMapa(data){
               icon: 'img/marker-'+color+'.gif',
               infoWindow: {
                 content: '<div id="infowindow_'+data[i].idgasolinera+'"></div><p>'+data[i].nombre+'<br>'+
-                    '<small>'+data[i].direccion+'</small>'+'</p>'+'<div class="div_calificar">'+
+				botones(data[i],color,i,j,"infowindow")+
+                    '</p>'+'<div class="div_calificar">'+
 '                        <table border="1" class="calificar">'+
 '                            <tr>'+
-'                                <td><button id="votoMas_'+data[i].idgasolinera+'" class="'+botonMas+'" '+opcionMas+'>+</button></td>'+
-'                                <td rowspan="2"><span id="promedio_voto_'+data[i].idgasolinera+'">'+(data[i].promedio*100)+'</span>%<br>'+
-'                                                <span id="votos_voto_'+data[i].idgasolinera+'">'+votos+'</span> votos'+
+'                                <td><button id="votoMas_'+data[i].idgasolinera+'" class="'+botonMas+' votoMas_'+data[i].idgasolinera+'" '+opcionMas+'>+</button></td>'+
+'                                <td rowspan="2"><span id="promedio_voto_'+data[i].idgasolinera+'" class="promedio_voto_'+data[i].idgasolinera+'">'+(data[i].promedio*100)+'</span>%<br>'+
+'                                                <span id="votos_voto_'+data[i].idgasolinera+'" class="votos_voto_'+data[i].idgasolinera+'">'+votos+'</span> votos'+
 '                                </td>'+
 '                            </tr>'+
 '                            <tr>'+
-'                                <td><button id="votoMenos_'+data[i].idgasolinera+'" class="'+botonMenos+'"  '+opcionMenos+'  >-</button></td>'+
+'                                <td><button id="votoMenos_'+data[i].idgasolinera+'" class="'+botonMenos+' votoMenos_'+data[i].idgasolinera+'"  '+opcionMenos+'  >-</button></td>'+
 '                            </tr>'+
-'                        </table>'+botones(data[i],color,i,j,"infowindow")+
+'                        </table>'+
+						'<p>'+'<small>'+data[i].direccion+'</small>'+'</p>'+
 '                    </div>'
               }
             });
@@ -252,7 +260,9 @@ function buscarGasolinerasCoord(latitud,longitud,pagina){
                     latitud:latitud,
                     longitud:longitud,
                     geolat:$("#geo-lat").val(),
-                    geolng:$("#geo-lng").val()
+                    geolng:$("#geo-lng").val(),
+					usuario:$("#uuid").val(),
+					tipo:$("#device").val()
                 },
                 success: function( data ){
                     if(typeof data.error !== "undefined"){
@@ -448,14 +458,22 @@ function botones(data,color,i,j,infowindow){
 	var botones = '<div class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal" data-type="horizontal" data-role="controlgroup" aria-disabled="false" data-disabled="false" data-shadow="false" data-corners="true" data-exclude-invisible="true" data-mini="false" data-init-selector=":jqmData(role=\'controlgroup\')">\n\
 	<div class="ui-controlgroup-controls" style="border-radius: 5px 5px 5px 5px;">';
 	var child = "";
-	if(infowindow != "infowindow"){
+	if(infowindow != "infowindow" && infowindow != "perfil"){
 		botones = botones + '<a class="ui-btn ui-btn-up-c ui-shadow ui-btn-corner-all ui-mini ui-btn-icon-left ui-first-child pan-to-marker" href="#" data-marker-index="'+(i+j)+'"  color="'+color+'" id="boton-centrar-'+data.idgasolinera+'"data-mini="true" data-icon="arrow-d" data-role="button" href="#" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a">\n\
 			<span class="ui-btn-inner">\n\
 			<span class="ui-btn-text">Centrar</span>\n\
 			<span class="ui-icon ui-icon-arrow-d ui-icon-shadow"> </span>\n\
 			</span>\n\
 		</a>';
-		
+	}else if(infowindow == "perfil"){
+		/*botones = botones + '<a class="ui-btn ui-btn-up-c ui-shadow ui-btn-corner-all ui-mini ui-btn-icon-left ui-first-child" href="#" onclick="perfilGasolinera('+data.idgasolinera+');" idgasolinera="'+data.idgasolinera+'" id="open-dialog-infowindow-'+data.idgasolinera+'" data-mini="true" data-icon="arrow-d" data-role="button" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a">\n\
+			<span class="ui-btn-inner">\n\
+			<span class="ui-btn-text">Perfil</span>\n\
+			<span class="ui-icon ui-icon-arrow-d ui-icon-shadow"> </span>\n\
+			</span>\n\
+		</a>';*/
+		var anchorRuta = 'data-rel="back"';
+		var child = 'ui-first-child';
 	}else{
 		botones = botones + '<a class="ui-btn ui-btn-up-c ui-shadow ui-btn-corner-all ui-mini ui-btn-icon-left ui-first-child" href="#" onclick="perfilGasolinera('+data.idgasolinera+');" idgasolinera="'+data.idgasolinera+'" id="open-dialog-infowindow-'+data.idgasolinera+'" data-mini="true" data-icon="arrow-d" data-role="button" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a">\n\
 			<span class="ui-btn-inner">\n\
@@ -464,7 +482,7 @@ function botones(data,color,i,j,infowindow){
 			</span>\n\
 		</a>';
 	}
-	botones = botones + '<a class="ui-btn ui-btn-up-c ui-shadow ui-btn-corner-all ui-mini ui-btn-icon-left '+child+'" data-mini="true" data-icon="arrow-u" data-role="button" href="#" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a"  onclick="calculaRuta('+data.idgasolinera+');">\n\
+	botones = botones + '<a class="ui-btn ui-btn-up-c ui-shadow ui-btn-corner-all ui-mini ui-btn-icon-left '+child+'" data-mini="true" data-icon="arrow-u" data-role="button" href="#" data-corners="true" data-shadow="true" '+anchorRuta+' data-iconshadow="true" data-wrapperels="span" data-theme="a"  onclick="calculaRuta('+data.idgasolinera+');">\n\
 			<span class="ui-btn-inner">\n\
 			<span class="ui-btn-text">Ruta</span>\n\
 			<span class="ui-icon ui-icon-arrow-u ui-icon-shadow"> </span>\n\
@@ -490,28 +508,50 @@ function votar(idgasolinera,tipo){
     }
     $.ajax(
     {
-        url: $("#base_url").val()+"index.php/gasolinera/voto",
+        url: $("#base_url").val()+"index.php/gasolinera/votoWS",
         type: "post",
         dataType: "json",
         data:{
             voto:voto,
             gasolinera:idgasolinera,
-			movil:7
+			movil:$("#uuid").val(),
+			tipo:$("#device").val()
         },
         success: function( strData ){
                 var promedio = strData.promedio*100;
                 $("#promedio_"+idgasolinera).html( promedio.toFixed(2) );
-                $("#promedio_voto_"+idgasolinera).html( promedio.toFixed(2) );
+                $(".promedio_voto_"+idgasolinera).html( promedio.toFixed(2) );
                 $("#votos_"+idgasolinera).html( strData.votos );
-                $("#votos_voto_"+idgasolinera).html( strData.votos );
+                $(".votos_voto_"+idgasolinera).html( strData.votos );
                 var claseMas = (voto==1)?"botonGris":"botonMas";
                 var claseMenos = (voto==0)?"botonGris":"botonMenos";
-                var claseMasAnterior = $("#votoMas_"+idgasolinera).attr("class");
-                var claseMenosAnterior = $("#votoMenos_"+idgasolinera).attr("class");
-                $("#votoMas_"+idgasolinera).removeClass(claseMasAnterior);
-                $("#votoMenos_"+idgasolinera).removeClass(claseMenosAnterior);
-                $("#votoMas_"+idgasolinera).addClass(claseMas);
-                $("#votoMenos_"+idgasolinera).addClass(claseMenos);
+                //claseMasAnterior = $(".votoMas_"+idgasolinera).attr("class");
+                //claseMenosAnterior = $(".votoMenos_"+idgasolinera).attr("class");
+				
+				var claseMasAnterior = "";
+				var claseMenosAnterior = "";
+				
+				var classList =$(".votoMas_"+idgasolinera).attr('class').split(/\s+/);
+				console.log(classList);
+				$.each( classList, function(index, item){
+					if (item != "votoMas_"+idgasolinera) {
+					   claseMasAnterior = item;
+					}
+				});
+				var classList =$(".votoMenos_"+idgasolinera).attr('class').split(/\s+/);
+				$.each( classList, function(index, item){
+					if (item != "votoMenos_"+idgasolinera) {
+					   claseMenosAnterior = item;
+					}
+				});
+				
+				console.log("claseMasAnterior:"+claseMasAnterior);
+				console.log("claseMenosAnterior:"+claseMenosAnterior);
+				
+                $(".votoMas_"+idgasolinera).removeClass(claseMasAnterior);
+                $(".votoMenos_"+idgasolinera).removeClass(claseMenosAnterior);
+                $(".votoMas_"+idgasolinera).addClass(claseMas);
+                $(".votoMenos_"+idgasolinera).addClass(claseMenos);
                 
                 if(voto==0){
                     $("#votoMenos_"+idgasolinera).removeAttr('onclick');
@@ -744,6 +784,7 @@ if($("#position").val()=="true"){
 
 function cargaDatosEstacion(data){
 	console.log(data);
+	$("#botones-gas").html(botones(data,"","","","perfil"));
 	$("#nombre-gas").html(data.estacion+" - "+data.nombre);
 	$("#direccion-gas").html(data.direccion+" "+data.colonia+", "+data.nombre_ciudad+", "+data.nombre_estado);
 	var distanciaGasolinera = (data.distancia<1000)?data.distancia.toFixed(2)+" m." : (data.distancia/1000).toFixed(2)+" km.";
@@ -788,8 +829,28 @@ function cargaDatosEstacion(data){
 	$("#servicios-gas").html("");
 	for( var i in data.productos){
 		$("#servicios-gas").append("<img src=\"img/"+data.productos[i].nombre.toLowerCase()+".png\" /><br>");
-		console.log(data.productos[i].nombre);
 	}
+	console.log(data);
+
+	var botonMas = ((data.calificacion==0 || data.calificacion==null))?"botonMas":"botonGris";
+	var botonMenos = ((data.calificacion==1 || data.calificacion==null))?"botonMenos":"botonGris";
+	var opcionMas = ((data.calificacion==0 || data.calificacion==null) )?'onclick="votar('+data.idgasolinera+',\'mas\');"' :'title="Ya haz votado por esta gasolinera"';
+	var opcionMenos = ((data.calificacion==1 || data.calificacion==null) )?'onclick="votar('+data.idgasolinera+',\'menos\');"' :'title="Ya haz votado por esta gasolinera"';
+	var votos = (data.votos == null) ? 0 : data.votos;
+	var divCalificar = '<div class="div_calificar_perfil">'+
+'                        <table border="1" class="calificar">'+
+'                            <tr>'+
+'                                <td><button id="votoMas_'+data.idgasolinera+'" class="'+botonMas+' votoMas_'+data.idgasolinera+'" '+opcionMas+'>+</button></td>'+
+'                                <td rowspan="2"><span id="promedio_voto_'+data.idgasolinera+'"  class="promedio_voto_'+data.idgasolinera+'">'+data.promedio+'</span>%<br>'+
+'                                                <span id="votos_voto_'+data.idgasolinera+'" class="votos_voto_'+data.idgasolinera+'">'+votos+'</span> votos'+
+'                                </td>'+
+'                            </tr>'+
+'                            <tr>'+
+'                                <td><button id="votoMenos_'+data.idgasolinera+'" class="'+botonMenos+' votoMenos_'+data.idgasolinera+'"  '+opcionMenos+'  >-</button></td>'+
+'                            </tr>'+
+'                        </table>'+
+'                    </div>';
+	$("#divCalificar-gas").html(divCalificar);
 }
 
 function regresarAListado(){

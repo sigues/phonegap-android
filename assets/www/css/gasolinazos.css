@@ -115,6 +115,11 @@
             height:225px;
             width:225px;
         }
+		
+        .div_calificar_perfil{
+            height:100px;
+            width:100px;
+        }
         
         .div_calificar #votoMas{
             width:30px;

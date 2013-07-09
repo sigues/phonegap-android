@@ -2,7 +2,7 @@
 <html xmlns:fb="http://ogp.me/ns/fb#">
 <head>
  
-<script type="text/javascript" src="cordova-2.7.0.js"></script>
+<!--<script type="text/javascript" src="cordova-2.7.0.js"></script>-->
 <link rel="stylesheet" href="js/jquery.mobile-1.3.1.min.css" />
 <link rel="stylesheet" href="css/gasolinazos.css" />
 <script src="js/jquery.js"></script>
@@ -14,7 +14,7 @@
 </head>
 <body>
 	<input type="hidden" id="latitud" value="0" />
-	<input type="hidden" id="base_url" value="http://skrik1893.startlogic.com/gasolinazos/" />
+	<input type="hidden" id="base_url" value="http://localhost/gasolinazos/" />
 	<input type="hidden" id="longitud" value="0" />
 	<input type="hidden" id="markers" value="0" />
 	<input type="hidden" id="position" value="false" />
@@ -25,6 +25,9 @@
 	<input type="hidden" id="gasolinera-mostrada" value="0" />
 	<input type="hidden" id="plus" value="0" />
 	<input type="hidden" id="intervalo" value="true" />
+	<input type="hidden" id="uuid" value="0" />
+	<input type="hidden" id="device" value="android" />
+
 	
 <div data-role="page" id="index">
  
@@ -116,6 +119,15 @@
 			<span id="nombre-gas"></span><br>
 			<span id="direccion-gas"></span><br>
 		<table>
+			<tr>
+				<td colspan="2" id="botones-gas--"></td>
+			</tr>
+			<tr>
+				<td colspan="2" id="divCalificar-gas--">
+					<div id="botones-gas"></div>
+					<div id="divCalificar-gas"></div>
+				</td>
+			</tr>
 			<tr>
 				<td>PROFECO: <span id="profeco-gas"></span></td>
 				<td>Gasolinazos: <span id="gasolinazos-gas"></span></td>

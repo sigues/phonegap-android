@@ -22,6 +22,7 @@ package com.Gasolinazos.Gasolinazos;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
+
 public class Gasolinazos extends DroidGap
 {
     @Override

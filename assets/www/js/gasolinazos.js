@@ -37,8 +37,8 @@ $(document).ready(function() {
     });
 
 
-	//$("#uuid").val(device.uuid);
-	$("#uuid").val("1234");
+	$("#uuid").val(device.uuid);
+	//$("#uuid").val("1234");
 	
 	$(document).on('pageshow', '#second', function(e){   
 		$("#comentarios-estacion").html("");
@@ -60,7 +60,7 @@ $(document).ready(function() {
 					$.mobile.loading('hide');
 					
 					var ref = "http://skrik1893.startlogic.com/gasolinazos/index.php/gasolinera/estacion/"+strData.estacion;
-					/*$("#comentarios-estacion").html('<div id="fb-root" class="fb-root"></div><fb:comments href="'+ref+'" num_posts="10" id="fb-comments"></fb:comments>');
+					$("#comentarios-estacion").html('<div id="fb-root" class="fb-root"></div><fb:comments href="'+ref+'" num_posts="10" id="fb-comments"></fb:comments>');
 						(function(d, s, id) {
 						  var js, fjs = d.getElementsByTagName(s)[0];
 						  if (d.getElementById(id)) return;
@@ -72,7 +72,7 @@ $(document).ready(function() {
 					$("#fb-comments").attr('href', ref);
 					FB.XFBML.parse();	
 					$("#comentarios-estacion").width(width);
-					$("#comentarios-estacion").attr("width",width);*/
+					$("#comentarios-estacion").attr("width",width);
 					
 				}
 			});
@@ -99,6 +99,7 @@ function readyEstado(){
                             );
     });
 }
+
 function readyCiudad(){
     $("#ciudad").change(function(){
                     $.ajax(
@@ -179,43 +180,30 @@ function cargaDatosMapa(data){
       for (var i = 0; i < length; i++) {
           reportes = data[i].reportes.length;j=0;
           if(data[i].latitud != null && data[i].longitud != null && data[i].idgasolinera!= undefined){
-              var color = calculaColor(data[i].promedio,data[i].votos,data[i].reportes);
-              var botonMas = ((data[i].calificacion==0 || data[i].calificacion==null))?"botonMas":"botonGris";
-              var botonMenos = ((data[i].calificacion==1 || data[i].calificacion==null))?"botonMenos":"botonGris";
-              var opcionMas = ((data[i].calificacion==0 || data[i].calificacion==null) )?'onclick="votar('+data[i].idgasolinera+',\'mas\');"' :'title="Ya haz votado por esta gasolinera"';
-              var opcionMenos = ((data[i].calificacion==1 || data[i].calificacion==null) )?'onclick="votar('+data[i].idgasolinera+',\'menos\');"' :'title="Ya haz votado por esta gasolinera"';
-              var votos = (data[i].votos == null) ? 0 : data[i].votos;
+			var color = calculaColor(data[i].promedio,data[i].votos,data[i].reportes);
+			var botonMas = ((data[i].calificacion==0 || data[i].calificacion==null))?"botonMas":"botonGris";
+			var botonMenos = ((data[i].calificacion==1 || data[i].calificacion==null))?"botonMenos":"botonGris";
+			var opcionMas = ((data[i].calificacion==0 || data[i].calificacion==null) )?'onclick="votar('+data[i].idgasolinera+',\'mas\');"' :'title="Ya haz votado por esta gasolinera"';
+			var opcionMenos = ((data[i].calificacion==1 || data[i].calificacion==null) )?'onclick="votar('+data[i].idgasolinera+',\'menos\');"' :'title="Ya haz votado por esta gasolinera"';
+			var votos = (data[i].votos == null) ? 0 : data[i].votos;
             var marker = map.addMarker({
               
               lat: data[i].latitud,
               lng: data[i].longitud,
               title: data[i].estacion,
               icon: 'img/marker-'+color+'.gif',
-              infoWindow: {
-                content: '<div id="infowindow_'+data[i].idgasolinera+'"></div><p>'+data[i].nombre+'<br>'+
-				botones(data[i],color,i,j,"infowindow")+
-                    '</p>'+'<div class="div_calificar">'+
-'                        <table border="1" class="calificar">'+
-'                            <tr>'+
-'                                <td><button id="votoMas_'+data[i].idgasolinera+'" class="'+botonMas+' votoMas_'+data[i].idgasolinera+'" '+opcionMas+'>+</button></td>'+
-'                                <td rowspan="2"><span id="promedio_voto_'+data[i].idgasolinera+'" class="promedio_voto_'+data[i].idgasolinera+'">'+(data[i].promedio*100)+'</span>%<br>'+
-'                                                <span id="votos_voto_'+data[i].idgasolinera+'" class="votos_voto_'+data[i].idgasolinera+'">'+votos+'</span> votos'+
-'                                </td>'+
-'                            </tr>'+
-'                            <tr>'+
-'                                <td><button id="votoMenos_'+data[i].idgasolinera+'" class="'+botonMenos+' votoMenos_'+data[i].idgasolinera+'"  '+opcionMenos+'  >-</button></td>'+
-'                            </tr>'+
-'                        </table>'+
-						'<p>'+'<small>'+data[i].direccion+'</small>'+'</p>'+
-'                    </div>'
-              }
-            });
-/*			$("#open-dialog-infowindow-"+data[i].idgasolinera).click(function(){
-				$.mobile.changePage('#second','pop',false,true);
-			});*/
+			  idgasolinera: data[i].idgasolinera
+			});
+			var idgas_for = data[i].idgasolinera;
+			google.maps.event.addListener(marker, "click", function() {
+				console.log(this.idgasolinera);
+				perfilGasolinera(this.idgasolinera);
+			});
             markers[i] = data[i].idgasolinera;
           }
       }
+	  var markersSize = map.markers.length;
+	  var idgasolinera_for = 0;
   }
   $.mobile.loading('hide');
   return;
@@ -564,7 +552,6 @@ function votar(idgasolinera,tipo){
     });
 }
 
-
 function altaGasolinera(){
     $("#altaGasolinera").slideToggle(500);
 }
@@ -714,6 +701,7 @@ function trazaRuta(latitud,longitud,estacion){
 		$("#regresar-main").attr("show","true");
 		$("#regresar-main").show();
         $('#ul-resultados').append('<li>'+estacion.estacion+" "+estacion.nombre+'</li>');
+		document.addEventListener("backbutton", regresarAListado, false);
 		map.drawRoute({
             origin: [$("#geo-lat").val(), $("#geo-lng").val()],
             destination: [latitud,longitud],
@@ -783,7 +771,6 @@ if($("#position").val()=="true"){
 }
 
 function cargaDatosEstacion(data){
-	console.log(data);
 	$("#botones-gas").html(botones(data,"","","","perfil"));
 	$("#nombre-gas").html(data.estacion+" - "+data.nombre);
 	$("#direccion-gas").html(data.direccion+" "+data.colonia+", "+data.nombre_ciudad+", "+data.nombre_estado);
@@ -828,12 +815,10 @@ function cargaDatosEstacion(data){
 	$("#gasolinazos-gas").html("<img src='img/light-"+color+".png' style='float:none' /> "+promedio.toFixed(2)+"% ("+data.votos+" votos)");
 	$("#servicios-gas").html("");
 	for( var i in data.productos){
-		$("#servicios-gas").append("<img src=\"img/"+data.productos[i].nombre.toLowerCase()+".png\" /><br>");
+		$("#servicios-gas").append("<img src=\"img/"+data.productos[i].nombre.toLowerCase()+".png\" width=\"100px\" /><br>");
 	}
-	console.log(data);
-
-	var botonMas = ((data.calificacion==0 || data.calificacion==null))?"botonMas":"botonGris";
-	var botonMenos = ((data.calificacion==1 || data.calificacion==null))?"botonMenos":"botonGris";
+	var botonMas = ((data.calificacion==0 || data.calificacion==null || data.calificacion==""))?"botonMas":"botonGris";
+	var botonMenos = ((data.calificacion==1 || data.calificacion==null || data.calificacion==""))?"botonMenos":"botonGris";
 	var opcionMas = ((data.calificacion==0 || data.calificacion==null) )?'onclick="votar('+data.idgasolinera+',\'mas\');"' :'title="Ya haz votado por esta gasolinera"';
 	var opcionMenos = ((data.calificacion==1 || data.calificacion==null) )?'onclick="votar('+data.idgasolinera+',\'menos\');"' :'title="Ya haz votado por esta gasolinera"';
 	var votos = (data.votos == null) ? 0 : data.votos;
@@ -860,6 +845,7 @@ function regresarAListado(){
 
 	buscarGasolinerasCoord(latitud,longitud);
 	$("#regresar-main").hide();
+	document.removeEventListener("backbutton", regresarAListado, false);
 }
 
 function perfilGasolinera(idgasolinera){
